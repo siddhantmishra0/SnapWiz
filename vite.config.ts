@@ -8,6 +8,11 @@ import { cloudflare } from "@cloudflare/vite-plugin";
 // @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
 export default defineConfig(({ command }) => {
   return {
+    build: {
+      // Use hidden sourcemaps in production so error services can map errors
+      // without exposing sourcemaps as public assets. Disable in other modes.
+      sourcemap: command === "build" ? "hidden" : false,
+    },
     plugins: [
       tanstackStart({
         server: { entry: "server" },
